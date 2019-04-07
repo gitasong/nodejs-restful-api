@@ -1,0 +1,7 @@
+1. The API listens on a PORT and accepts incoming HTTP requests for GET, POST, PUT, DELETE, and HEAD.
+2. The API allows a client to connect, then make a new user, edit that user, and delete the user.
+3. The API allows a user to sign in and receive a token, which they can then use for subsequent authenticated requests.
+4. The API allows the user to sign out, which invalidates their token.
+5. The API allows a signed-in user to use their token to create a new URL "check," and to define what "up" means (e.g. status code 200, anything other than 500, etc.).
+6. The API allows a signed-in user to edit or delete any of their "checks" and limits their checks to five in number.
+7. In the background, workers perform all the "checks" at the appropriate times, and alert the users when one of their checks change status from "up" to "down" and vice-versa. The checks will run once per minute.
