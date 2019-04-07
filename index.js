@@ -44,3 +44,19 @@ const server = http.createServer((req, res) => {
 server.listen(3008, () => {
   console.log('The server is now listening on port 3008');
 });
+
+// Define request handlers
+const handlers = {};
+// Sample handler
+handlers.sample = (data, callback) => {
+  // Callback with HTTP status code and payload object
+  callback(406, {'name': 'sample handler'});
+};
+// Not found handler
+handlers.notFound = (data, callback) => {
+  callback(404);
+};
+// Define the request router
+const router = {
+  'sample': handlers.sample
+}
