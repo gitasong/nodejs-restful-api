@@ -44,6 +44,21 @@ const server = http.createServer((req, res) => {
       'headers': headers,
       'payload': buffer
     }
+    // Route request to handler specified in router
+    chosenHandler(data, (statusCode, payload) => {
+      // Use the status code called back by the handler, or default to 200
+      statusCode = typeof(statusCode) === 'number' ? statusCode : 200;
+      // Use the payload called back by the handler, or default to an empty object
+      payload = typeof(payload) === 'object' ? payload : {};
+      // Convert payload to a string
+      const payloadString = JSON.stringify(payload);
+      // Send response
+      res.setHeader('Content-Type', 'application/json');  // set response type to JSON, for brower parsing
+      res.writeHead(statusCode);
+      res.end(payloadString);
+      // Log response
+      console.log('Returning response: ', statusCode, payloadString)
+    });
     // Log request
     console.log(`Request received on path: ${trimmedPath} with method: ${method}, query string parameters: ${queryStringObject}, headers: ${headers}, and payload: ${buffer}`);
   });
