@@ -36,6 +36,8 @@ const server = http.createServer((req, res) => {
 
     // Send response
     res.end('Hello, World!\n');
+    // Choose the handler for each request path. If not found, use the Not Found handler.
+    const chosenHandler = typeof(router[trimmedPath]) !== 'undefined' ? router[trimmedPath] : handlers.notFound;
     // Construct data object to send to handler
     const data = {
       'trimmedPath': trimmedPath,
