@@ -36,6 +36,14 @@ const server = http.createServer((req, res) => {
 
     // Send response
     res.end('Hello, World!\n');
+    // Construct data object to send to handler
+    const data = {
+      'trimmedPath': trimmedPath,
+      'queryStringObject': queryStringObject,
+      'method': method,
+      'headers': headers,
+      'payload': buffer
+    }
     // Log request
     console.log(`Request received on path: ${trimmedPath} with method: ${method}, query string parameters: ${queryStringObject}, headers: ${headers}, and payload: ${buffer}`);
   });
