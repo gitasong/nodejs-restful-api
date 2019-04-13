@@ -8,14 +8,16 @@
 
  // Staging (default) environment
  environments.staging = {
-   'port': 3008,
-   'envName': 'staging'
+   'httpPort': 3008,
+   'envName': 'staging',
+   'httpsPort': 3009
  };
 
  // Production environment
  environments.production = {
-   'port': 5008,
-   'envName': 'production'
+   'httpPort': 5008,
+   'envName': 'production',
+   'httpsPort': 5009
  };
 
  // Determine which environment was passed as a command-line argument
