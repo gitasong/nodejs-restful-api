@@ -5,13 +5,39 @@
 
 // Dependencies
 const http = require('http');
+const https = require('https');
 const url = require('url');
 const StringDecoder = require('string_decoder').StringDecoder;
 const config = require('./config');
+const fs = require('fs');
 
-// The server should respond to all requests with a string
-const server = http.createServer((req, res) => {
+// Instantiating HTTP server
+const httpServer = http.createServer((req, res) => {
+  unifiedServer(req, res);
+});
 
+// Start the HTTP server, and have it dynamically choose port based on environment config
+httpServer.listen(config.httpPort, () => {
+  console.log(`The HTTP server is now listening on port ${config.httpPort} in ${config.envName} mode`);
+});
+
+// Instantiating HTTPS server
+const httpsServerOptions = {
+  'key': fs.readFileSync('./https/key.pem'),
+  'cert': fs.readFileSync('./https/cert.pem')
+};
+
+const httpsServer = https.createServer(httpsServerOptions, (req, res) => {
+  unifiedServer(req, res);
+});
+
+// Start the HTTPS server, and have it dynamically choose port based on environment config
+httpsServer.listen(config.httpsPort, () => {
+  console.log(`The HTTPS server is now listening on port ${config.httpsPort} in ${config.envName} mode`);
+});
+
+// All the logic for both HTTP and HTTPS servers
+const unifiedServer = (req, res) => {
   // Get request URL and parse it
   // Sets parsedURL.queryString to true as if we had sent it to the queryString module
   // (works w/url module)
@@ -63,11 +89,7 @@ const server = http.createServer((req, res) => {
     // Log request
     console.log(`Request received on path: ${trimmedPath} with method: ${method}, query string parameters: ${queryStringObject}, headers: ${headers}, and payload: ${buffer}`);
   });
-});
-// Start the server, and have it dynamically choose port based on environment config
-server.listen(config.port, () => {
-  console.log(`The server is now listening on port ${config.port} in ${config.envName} mode`);
-});
+};
 
 // Define request handlers
 const handlers = {};
